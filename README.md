@@ -26,6 +26,7 @@ Prediction Model Accuracy Score: 0.9652777777777778 `
 **I am happy to present this software to you!**
 
 Data Source: [DataSource]
+Mu Variant : [Mu Variant]
 ###**The coding language used:**
 
 `Python 3.9.6`
@@ -53,3 +54,4 @@ Official Website: **[https://www.emirhanbulut.com.tr][OfficialWebSite]**
 [OfficialWebSite]: https://www.emirhanbulut.com.tr
 
 [DataSource]: https://microreact.org/
+[Mu Variant]: https://www.emirhanbulut.com.tr/artificial-intelligence/covid-19-mu-variant-b1621-machine-learning/
