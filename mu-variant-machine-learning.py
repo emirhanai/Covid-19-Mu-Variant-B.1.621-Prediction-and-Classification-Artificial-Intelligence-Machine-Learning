@@ -10,12 +10,13 @@ mu_variant_data = pd.read_csv('mu-variant-data.csv')
 
 #change function..
 def number_gender_change(x):
-    if x == 'Male':
-        return 0
-    elif x == 'Female':
-        return 1
-    else:
-        return 2
+    match x:
+        case 'Male':
+            return 0
+        case 'Female':
+            return 1
+        case _:
+            return 2
 
 #change of the str to int.
 mu_variant_data['Gender_Change'] = mu_variant_data['Gender'].apply(number_gender_change)
@@ -33,21 +34,25 @@ gender_y = mu_variant_data.loc[:,['Gender_Change']].values
 
 #                                 *******CLASSIFICATION IS THE MU VARIANT*******
 # we create the Train and Test datasets.. (parameters of the suitable)
-coverage_X_train, coverage_X_test, gender_y_train, gender_y_test = train_test_split(coverage_X,
-                                                                                    gender_y,
-                                                                                    test_size=0.22,
-                                                                                    stratify=None,
-                                                                                    shuffle=True,
-                                                                                    random_state=64)
+coverage_X_train, coverage_X_test, gender_y_train, gender_y_test = train_test_split(
+    coverage_X,
+    gender_y,
+    test_size=0.22,
+    stratify=None,
+    shuffle=True,
+    random_state=64
+)
 
 # we create of the our model 8Classifier)
-model_mu_variant = BaggingClassifier(base_estimator=None,
-                                     random_state=46,
-                                     n_estimators=2,
-                                     bootstrap=True,
-                                     max_features=1.0,
-                                     n_jobs=-1,
-                                     warm_start=False)
+model_mu_variant = BaggingClassifier(
+    base_estimator=None,
+    random_state=46,
+    n_estimators=2,
+    bootstrap=True,
+    max_features=1.0,
+    n_jobs=-1,
+    warm_start=False
+)
 
 # model is fitting with Train datasets.
 model_mu_variant.fit(coverage_X_train, gender_y_train)
@@ -63,21 +68,26 @@ print(f"Precision score: {precision_score(gender_y_test, prediction)}")
 # print(f"Confusion Matrix: {confusion_matrix(gender_y_test, prediction)}")
 
     #                                 *******PREDICTION IS THE MU VARIANT*******
-X_train, X_test, y_train, y_test = train_test_split(coverage_X,
-                                                    gender_y,
-                                                    test_size=0.05,
-                                                    stratify=None,
-                                                    shuffle=True,
-                                                    random_state=265)
+X_train, X_test, y_train, y_test = train_test_split(
+    coverage_X,
+    gender_y,
+    test_size=0.05,
+    stratify=None,
+    shuffle=True,
+    random_state=265
+)
 
 # creating of our predicting model
-model_mu_variant_predict = BaggingRegressor(base_estimator=None,
-                                            random_state=149,
-                                            n_estimators=1,
-                                            bootstrap=True,
-                                            max_features=1.0,
-                                            n_jobs=-1,
-                                            warm_start=True, bootstrap_features=True)
+model_mu_variant_predict = BaggingRegressor(
+    base_estimator=None,
+    random_state=149,
+    n_estimators=1,
+    bootstrap=True,
+    max_features=1.0,
+    n_jobs=-1,
+    warm_start=True, 
+    bootstrap_features=True
+)
 
 # our model is fitting..
 model_mu_variant_predict.fit(X_train, y_train)
@@ -88,12 +98,13 @@ a = model_mu_variant_predict.predict(X_test)
 predi = model_mu_variant_predict.predict([[1, 1, 0, 1, 2]])
 
 for i in predi:
-    if i == [1.]:
-        print("Congrats! Prediction Gender is the Female!")
-    elif i == [0.]:
-        print("Congrats! Prediction Gender is the Male!")
-    else:
-        print("Sorry! Prediction Gender is the Unknown!")
+    match i:
+        case i == [1.]:
+            print("Congrats! Prediction Gender is the Female!")
+        case i == [0.]:
+            print("Congrats! Prediction Gender is the Male!")
+        case _:
+            print("Sorry! Prediction Gender is the Unknown!")
 
 # our prediction software is the accuracy score :)
 print(f"Prediction Model Accuracy Score: {r2_score(y_test, a)} ")
@@ -113,7 +124,8 @@ def save_decision_trees_as_dot(model_mu_variant, iteration, feature_name):
         rounded=True,
         proportion=False,
         precision=2,
-        filled=True, )
+        filled=True
+    )
     #file_name.close()
     print("Classification {} saved as dot file".format(iteration + 1))
 
